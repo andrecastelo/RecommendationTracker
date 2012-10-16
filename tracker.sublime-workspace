@@ -83,7 +83,7 @@
 			"file": "bem_melhor.py",
 			"settings":
 			{
-				"buffer_size": 3425,
+				"buffer_size": 4502,
 				"line_ending": "Windows"
 			}
 		},
@@ -99,7 +99,7 @@
 			"file": "templates/layout.html",
 			"settings":
 			{
-				"buffer_size": 827,
+				"buffer_size": 1163,
 				"line_ending": "Windows"
 			}
 		},
@@ -107,7 +107,7 @@
 			"file": "templates/main.html",
 			"settings":
 			{
-				"buffer_size": 2606,
+				"buffer_size": 3175,
 				"line_ending": "Windows"
 			}
 		},
@@ -252,6 +252,8 @@
 	},
 	"file_history":
 	[
+		"/C/Users/agomes/Downloads/harvesthq-chosen-v0.9.8-69-gc481fed/harvesthq-chosen-c481fed/example.jquery.html",
+		"/C/portablePython/projects/trackerBemMelhor/static/bootstrap/js/bootstrap.js",
 		"/C/portablePython/projects/flaskr/static/bootstrap/css/bootstrap.css",
 		"/C/portablePython/projects/flaskr/schema.sql",
 		"/C/portablePython/projects/comunicados.py",
@@ -377,9 +379,7 @@
 		"/C/Users/agomes/Downloads/Sublime Text 2.0.1 x64/Data/Packages/ZenCoding/zen-coding.sublime-settings",
 		"/C/Users/agomes/Downloads/Sublime Text 2.0.1 x64/Data/Packages/User/Default (Windows).sublime-keymap",
 		"/C/ProjetosAtiva/Site2012/branches/ATIVADEV2012/CMSKentico/CMSWebParts/ATIVA/MinhaConta/ConsultasOperacoes/wpProventosPosicaoAtual.ascx",
-		"/C/ProjetosAtiva/Site2012/branches/ATIVADEV2012/CMSKentico/CMSScripts/ATIVA/ATIVA.Cadastro.js",
-		"/C/ProjetosAtiva/Site2012/branches/ATIVADEV2012/CMSKentico/CMSWebParts/ATIVA/MinhaConta/ConsultasOperacoes/wpProventosPosicaoAtual.ascx.cs",
-		"/C/Users/agomes/Downloads/Sublime Text 2.0.1 x64/Data/Packages/ZenCoding/Preferences.sublime-settings"
+		"/C/ProjetosAtiva/Site2012/branches/ATIVADEV2012/CMSKentico/CMSScripts/ATIVA/ATIVA.Cadastro.js"
 	],
 	"find":
 	{
@@ -557,7 +557,7 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -565,15 +565,15 @@
 					"file": "bem_melhor.py",
 					"settings":
 					{
-						"buffer_size": 3425,
+						"buffer_size": 4502,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2461,
-								2461
+								550,
+								550
 							]
 						],
 						"settings":
@@ -583,7 +583,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 945.0,
+						"translation.y": 45.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -620,20 +620,21 @@
 					"file": "templates/layout.html",
 					"settings":
 					{
-						"buffer_size": 827,
+						"buffer_size": 1163,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								734,
-								734
+								1163,
+								1163
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -646,15 +647,15 @@
 					"file": "templates/main.html",
 					"settings":
 					{
-						"buffer_size": 2606,
+						"buffer_size": 3175,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1664,
-								1664
+								1825,
+								1825
 							]
 						],
 						"settings":
@@ -663,7 +664,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 630.0,
+						"translation.y": 675.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
