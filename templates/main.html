@@ -37,11 +37,17 @@
 			});			
 		});
 
+
+		$('.adicionarToolTip').tooltip({
+			placement: 'right'
+		});
+
 	});
 
 
 </script>
 
+	<p>Utilize o formulário abaixo para adicionar um novo cliente e o colaborador que o indicou.</p>
 	<form action="{{ url_for('add_client') }}" method='post' class='add-entry form-horizontal'>
 		<div class="control-group">
 			<label class="control-label" for="colab-select">Colaborador</label>
@@ -68,6 +74,9 @@
 		</div>
 		
 	</form>
+	<h2>Colaboradores</h2>
+	<p>A lista abaixo possui os colaboradores e suas respectivas recomendações. 
+	Use o checkbox ao lado para indicar se o cliente tem conta aberta ou não.</p>
 	<ul class="colaboradores">
 		{% for colaborador in colaboradores %}
 		{% if not not colaborador.listaIndicacoes %}
@@ -75,7 +84,7 @@
 			<p class="row">
 				<span class="span4">{{ colaborador.nome }}</span>
 				<span class="span1">
-					<span class="contas-abertas">{{ colaborador.indicacoesValidas }}</span> / <span class="contas-total">{{ colaborador.listaIndicacoes|length }}</span>
+					<span class="contas-abertas adicionarToolTip" data-placement='top' title="Clientes indicados por este colaborador que abriram contas">{{ colaborador.indicacoesValidas }}</span> / <span class="contas-total adicionarToolTip" data-placement='top' title="Clientes indicados por este colaborador">{{ colaborador.listaIndicacoes|length }}</span>
 				</span>
 			</p>
 			<div class="indicacoes">
@@ -84,12 +93,12 @@
 						<div class="span4">{{ cliente.nome }}</div>
 						<div class="span1">
 							{% if not cliente.conta %}
-								<input type="checkbox" class='conta-checkbox' value='{{ cliente.id }}' name="conta">
+								<input type="checkbox" class='conta-checkbox adicionarToolTip' data-placement='left' title='Cliente abriu conta?' value='{{ cliente.id }}' name="conta">
 								{% else %}
-								<input type="checkbox" class='conta-checkbox' value='{{ cliente.id }}' name="conta" checked>
+								<input type="checkbox" class='conta-checkbox adicionarToolTip' data-placement='left' title='Cliente abriu conta?' value='{{ cliente.id }}' name="conta" checked>
 							{% endif %}
-							<a href="#" class="removeLink" title="Remover cliente" value="{{ cliente.id }}">
-								<i class="icon-remove tooltip" title="Remover cliente"></i>
+							<a href="#" class="removeLink adicionarToolTip" title="Remover cliente" value="{{ cliente.id }}">
+								<i class="icon-remove"></i>
 							</a>
 						</div>
 					</div>
