@@ -130,15 +130,6 @@ def updated_recommendations(colaboradorId):
     return clientsList
 
 
-
-
-
-#@app.route('/add_client_ajax')
-#def add_client_ajax():
-#    cliente = request.args.get('cliente')
-#    indicador = request.args.get('colab-indicador')    
-
-
 # execução
 if __name__ == '__main__':
     #init_db()
