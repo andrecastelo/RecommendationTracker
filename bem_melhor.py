@@ -52,9 +52,6 @@ def main_page():
     Main page function. It will list the available collaborators and its
     clients.
     """
-    cur = g.db.execute('select id, nome from areas order by id asc')
-    
-
     cur = g.db.execute('select id, nome, area from colaboradores order by id asc')
     entries = [ dict(nome = row[1], id = row[0], area = row[2],
         listaIndicacoes = [], indicacoes = 0,
