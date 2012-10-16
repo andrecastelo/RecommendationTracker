@@ -8,3 +8,11 @@
 .colaboradores li p { background-color: #eee; padding: 10px; border-radius: 5px; }
 
 .removeLink { position: relative; top: 3px; }
+
+.contas-abertas.adicionarToolTip:hover,
+.contas-total.adicionarToolTip:hover { font-style: italic; font-family: Georgia, Times, Serif; font-size: 1.5em; font-weight: bold; cursor: default;}
+
+.contas-abertas.adicionarToolTip,
+.contas-total.adicionarToolTip { font-style: italic; font-family: Georgia, Times, Serif; font-size: 1.5em; cursor: default;}
+
+h1, h2 { font-family: Georgia, Times, Serif; font-weight: normal; }
