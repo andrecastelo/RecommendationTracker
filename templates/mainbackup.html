@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<script type="text/javascript">
+	$(function () {
+		$('a.removeLink').bind('click', function() {
+			var idClient = $(this).attr('value');
+			$.getJSON($SCRIPT_ROOT + '/_remove_client', {
+				idCliente: idClient
+			}, function() {
+				$('#cliente-' + idClient).slideUp('fast');
+			});
+		});
+
+
+		$('.conta-checkbox').bind('click', function() {
+			var idClient = $(this).attr('value');
+			if ($(this).is(':checked')) {
+				$.getJSON($SCRIPT_ROOT + '/_open_acc', {
+					idCliente: idClient,
+					checked: 1
+				}, function() {	});
+			}
+			else {
+				$.getJSON($SCRIPT_ROOT + '/_open_acc', {
+					idCliente: idClient,
+					checked: 0
+				}, function() {});
+			}
+		});
+
+		function appViewModel() {
+			this.firstName = "Bert";
+			this.lastName = "Bertington";
+		}
+
+		ko.applyBindings(new appViewModel());
+
+	});
+
+
+</script>
+
+	<p data-bind="text: firstName">Xirolahs</p>
+	<p data-bind="text: lastName">Ereloas</p>
+
+	<form action="{{ url_for('add_client') }}" method='post' class='add-entry form-horizontal'>
+		<div class="control-group">
+			<label class="control-label" for="colab-select">Colaborador</label>
+			<div class="controls">
+				<select name="colab-indicador" id="colab-select">
+						{% for colaborador in colaboradores %}
+						<option value="{{ colaborador.id }}">{{ colaborador.nome }}</option>
+						{% endfor %}				
+				</select>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label for="cliente-input" class="control-label">Cliente</label>
+			<div class="controls">
+				<input type="text" name='cliente' id='cliente-input' class='cliente'>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" name="action" class="btn">Adicionar</button>
+			</div>
+		</div>
+		
+	</form>
+	<ul class="colaboradores">
+		{% for colaborador in colaboradores %}
+		{% if not not colaborador.listaIndicacoes %}
+		<li id="colaborador-{{ colaborador.id }}">
+			<p class="row">
+				<span class="span4">{{ colaborador.nome }}</span>
+				<span class="span1">{{ colaborador.indicacoesValidas }} / {{ colaborador.listaIndicacoes|length }} </span>
+			</p>
+			<div class="indicacoes">
+				{% for cliente in colaborador.listaIndicacoes %}
+					<div class="row" id="cliente-{{ cliente.id }}">
+						<div class="span4">{{ cliente.nome }}</div>
+						<div class="span1">
+							{% if not cliente.conta %}
+								<input type="checkbox" class='conta-checkbox' value='{{ cliente.id }}' name="conta">
+								{% else %}
+								<input type="checkbox" class='conta-checkbox' value='{{ cliente.id }}' name="conta" checked>
+							{% endif %}
+							<a href="#" class="removeLink" value="{{ cliente.id }}">
+								<i class="icon-remove"></i>
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>			
+		</li>
+		{% endif %}
+		{% endfor %}
+	</ul>
+
+{% endblock %}

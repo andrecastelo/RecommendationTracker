@@ -1,0 +1,10 @@
+.add-entry { border-bottom: 1px solid #ccc; border-top: 1px solid #ccc; padding-top: 20px; }
+.add-entry .btn { float: right; margin-right: 60px;}
+
+.colaboradores { list-style: none; }
+.colaboradores li { margin: 15px 0; }
+.colaboradores .row { height: 20px; }
+.colaboradores .indicacoes { margin-left: 15px; }
+.colaboradores li p { background-color: #eee; padding: 10px; border-radius: 5px; }
+
+.removeLink { position: relative; top: 3px; }
