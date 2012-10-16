@@ -77,13 +77,36 @@ def main_page():
 
 @app.route('/add_client', methods = ['POST'])
 def add_client():
-    if request.form['cliente']:
-        g.db.execute('insert into clientes (nome, indicacao) values (?, ?)',
-                [ request.form['cliente'], request.form['colab-indicador'] ])
-        g.db.commit()
-        return redirect(url_for('main_page'))
+    cur = g.db.execute('select id from colaboradores where nome=?',
+          [ request.form['colab-indicador'] ])
+
+    if cur.fetchall():
+        cur = g.db.execute('select id from colaboradores where nome=?',
+                [ request.form['colab-indicador'] ])
+        colaborador_id = cur.fetchall()[0][0]
+        if request.form['cliente']:
+            g.db.execute('insert into clientes (nome, indicacao) values (?, ?)',
+                    [ request.form['cliente'], colaborador_id ])
+            g.db.commit()
+            return redirect(url_for('main_page'))
+        else:
+            return redirect(url_for('main_page'))
+
     else:
-        return redirect(url_for('main_page'))
+        g.db.execute('insert into colaboradores (nome) values (?)',
+            [ request.form['colab-indicador'] ])
+        g.db.commit()
+        cur = g.db.execute('select id from colaboradores where nome=?',
+            [ request.form['colab-indicador'] ])
+        colaborador_id = cur.fetchall()[0][0]
+
+        if request.form['cliente']:
+            g.db.execute('insert into clientes (nome, indicacao) values (?, ?)',
+                    [ request.form['cliente'], colaborador_id ])
+            g.db.commit()
+            return redirect(url_for('main_page'))
+        else:
+            return redirect(url_for('main_page'))
 
 
 @app.route('/_remove_client')

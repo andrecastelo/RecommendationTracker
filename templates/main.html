@@ -42,6 +42,16 @@
 			placement: 'right'
 		});
 
+
+
+		$('#colab-select').typeahead({
+			source: [
+			{% for colaborador in colaboradores %}
+				'{{ colaborador.nome }}',
+			{% endfor %}
+			]
+		});
+
 	});
 
 
@@ -52,11 +62,7 @@
 		<div class="control-group">
 			<label class="control-label" for="colab-select">Colaborador</label>
 			<div class="controls">
-				<select name="colab-indicador" id="colab-select">
-						{% for colaborador in colaboradores %}
-						<option value="{{ colaborador.id }}">{{ colaborador.nome }}</option>
-						{% endfor %}				
-				</select>
+				<input type="text" name="colab-indicador" id="colab-select">
 			</div>
 		</div>
 
