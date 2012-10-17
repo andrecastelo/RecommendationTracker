@@ -8,8 +8,8 @@ create table colaboradores (
 create table clientes (
 	id INTEGER PRIMARY KEY autoincrement,
 	nome string not null,
-	aplicacao boolean not null default 0,
 	conta boolean not null default 0,
+	aplicacao boolean not null default 0,	
 	indicacao INTEGER,
 	FOREIGN KEY(indicacao) REFERENCES colaboradores(id)
 );
