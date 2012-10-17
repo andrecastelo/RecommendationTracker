@@ -14,6 +14,7 @@
 				$('#cliente-' + idClient).slideUp('fast');
 				$('#' + idColabJS + ' .contas-abertas').text(data.abertas);
 				$('#' + idColabJS + ' .contas-total').text(data.total);
+				$('#' + idColabJS + ' .contas-ativas').text(data.ativas);
 			});
 		});
 
@@ -34,7 +35,29 @@
 				}, function(data) {
 					$('#' + idColabJS + ' .contas-abertas').text(data.abertas);
 					$('#' + idColabJS + ' .contas-total').text(data.total);
+					$('#' + idColabJS + ' .contas-ativas').text(data.ativas);
 			});			
+		});
+
+
+		$('.ativa-checkbox').bind('click', function() {
+			var idClient = $(this).attr('value');
+			var idColabJS = $(this).parents('li').attr('id');
+			var idColabPy = idColabJS.split('-')[1];
+			var checado = 0;
+			if ($(this).is(':checked')) {
+				checado = 1;
+			}
+
+			$.getJSON($SCRIPT_ROOT + '/_activate_acc', {
+				idCliente: idClient,
+				idColaborador: idColabPy,
+				checked: checado
+				}, function(data) {
+					$('#' + idColabJS + ' .contas-abertas').text(data.abertas);
+					$('#' + idColabJS + ' .contas-total').text(data.total);
+					$('#' + idColabJS + ' .contas-ativas').text(data.ativas);
+				});
 		});
 
 
@@ -92,9 +115,15 @@
 			<li id="colaborador-{{ colaborador.id }}" class="span9">
 				<div class="row header">
 					<span class="span2">{{ colaborador.nome }}</span>
-					<span class="span2 contas-total adicionarToolTip" data-placement='top' title="Clientes indicados por este colaborador">{{ colaborador.listaIndicacoes|length }} clientes indicados</span>
-					<span class="span2 contas-abertas adicionarToolTip" data-placement='top' title="Clientes indicados por este colaborador que abriram contas">{{ colaborador.indicacoesValidas }} contas abertas</span>
-					
+					<span class="span2 adicionarToolTip" data-placement='top' title="Clientes indicados por este colaborador">
+						<span class="contas-total">{{ colaborador.listaIndicacoes|length }}</span> clientes indicados
+					</span>
+					<span class="span2 adicionarToolTip" data-placement='top' title="Clientes indicados por este colaborador que abriram contas">
+						<span class="contas-abertas">{{ colaborador.indicacoesValidas }}</span> contas abertas
+					</span>
+					<span class="span2 adicionarToolTip" data-placement='top' title="Clientes indicados por este colaborador que realizaram aplicações">
+						<span class="contas-ativas">{{ colaborador.indicacoesAtivadas }}</span> contas ativas
+					</span>
 				</div>
 				<div class="indicacoes">
 					{% for cliente in colaborador.listaIndicacoes %}
@@ -102,17 +131,21 @@
 							<div class="span3 offset1">{{ cliente.nome }}</div>
 							<div class="span2">
 								<label class='checkbox adicionarToolTip' data-placement='left' title='Marque se o cliente abriu conta na empresa ou não'>
-								{% if not cliente.conta %}
-									<input type="checkbox" value='{{ cliente.id }}' name="conta" class='conta-checkbox'>
-									{% else %}
+								{% if cliente.contaAberta %}
 									<input type="checkbox" value='{{ cliente.id }}' name="conta" class='conta-checkbox' checked>
+									{% else %}
+									<input type="checkbox" value='{{ cliente.id }}' name="conta" class='conta-checkbox'>
 								{% endif %}
 									Conta aberta
 								</label>								
 							</div>
 							<div class="span2">
 								<label class="checkbox adicionarToolTip">
-									<input type="checkbox" name='aplicacao' class='aplicacao-checkbox'>
+								{% if cliente.contaAtiva %}
+									<input type="checkbox" value='{{ cliente.id }}' name="ativada" class='ativa-checkbox' checked>
+									{% else %}
+									<input type="checkbox" value='{{ cliente.id }}' name="ativada" class='ativa-checkbox'>
+								{% endif %}
 									Conta ativa
 								</label>
 							</div>

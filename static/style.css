@@ -3,15 +3,17 @@
 
 .colaboradores { list-style: none; }
 .colaboradores li { margin: 15px 0; }
-.colaboradores .header { background-color: #eee; padding: 10px 0; border-radius: 5px; height: 20px;}
+.colaboradores .header { background-color: #eee; padding: 10px 0; border-radius: 5px; height: 20px;; font-style: italic; }
 .colaboradores .indicacoes { margin-top: 15px; }
 
 .removeLink { position: relative; top: 3px; }
 
-.contas-abertas.adicionarToolTip:hover,
-.contas-total.adicionarToolTip:hover { font-style: italic; font-weight: bold; cursor: default;}
+.contas-ativas:hover,
+.contas-abertas:hover,
+.contas-total:hover { font-weight: bold; cursor: default;}
 
-.contas-abertas.adicionarToolTip,
-.contas-total.adicionarToolTip { font-style: italic; cursor: default;}
+.contas-ativas,
+.contas-abertas,
+.contas-total { cursor: default;}
 
 h1, h2 { font-family: Georgia, Times, Serif; font-weight: normal; }
