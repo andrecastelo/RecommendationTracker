@@ -52,26 +52,30 @@ def main_page():
     Main page function. It will list the available collaborators and its
     clients.
     """
-    cur = g.db.execute('select id, nome, area from colaboradores order by id asc')
-    entries = [ dict(nome = row[1], id = row[0], area = row[2],
-        listaIndicacoes = [], indicacoes = 0,
-        indicacoesValidas = 0) for row in cur.fetchall() ]
+    cur = g.db.execute('select id, nome from colaboradores order by id asc')
+    entries = [ dict(nome = row[1], id = row[0],
+        listaIndicacoes = [], 
+        indicacoes = 0,
+        indicacoesValidas = 0,
+        indicacoesAtivadas = 0) for row in cur.fetchall() ]
 
-    cur = g.db.execute('select * from clientes order by indicacao asc')
+    cur = g.db.execute('select id, nome, conta, aplicacao, indicacao from clientes order by indicacao asc')
     clientsList = [ dict(id = row[0], nome = row[1],
-        conta = True if row[2] else None,
-        indicacao = row[3]) for row in cur.fetchall() ]
+        contaAberta = True if row[2] else False,
+        contaAtiva = True if row[3] else False,
+        indicacao = row[4]) for row in cur.fetchall() ]
 
     for client in clientsList:
         colaborador = entries[client['indicacao'] - 1]
         colaborador['listaIndicacoes'].append(client)
         colaborador['indicacoes'] += 1
-        if client['conta']:
+        if client['contaAberta']:
             colaborador['indicacoesValidas'] += 1
+        if client['contaAtiva']:
+            colaborador['indicacoesAtivadas'] += 1
 
     return render_template('main.html', 
-        colaboradores = sorted(entries, key = lambda k: k['indicacoes'],
-        reverse = True),
+        colaboradores = sorted(entries, key = lambda k: k['indicacoes'], reverse = True),
         listaClientes = clientsList)
 
 
@@ -88,25 +92,21 @@ def add_client():
             g.db.execute('insert into clientes (nome, indicacao) values (?, ?)',
                     [ request.form['cliente'], colaborador_id ])
             g.db.commit()
-            return redirect(url_for('main_page'))
-        else:
-            return redirect(url_for('main_page'))
 
     else:
-        g.db.execute('insert into colaboradores (nome) values (?)',
-            [ request.form['colab-indicador'] ])
-        g.db.commit()
-        cur = g.db.execute('select id from colaboradores where nome=?',
-            [ request.form['colab-indicador'] ])
-        colaborador_id = cur.fetchall()[0][0]
-
-        if request.form['cliente']:
-            g.db.execute('insert into clientes (nome, indicacao) values (?, ?)',
-                    [ request.form['cliente'], colaborador_id ])
+        if (request.form['colab-indicador']):
+            g.db.execute('insert into colaboradores (nome) values (?)',
+                [ request.form['colab-indicador'] ])
             g.db.commit()
-            return redirect(url_for('main_page'))
-        else:
-            return redirect(url_for('main_page'))
+            cur = g.db.execute('select id from colaboradores where nome=?',
+                [ request.form['colab-indicador'] ])
+            colaborador_id = cur.fetchall()[0][0]
+
+            if request.form['cliente']:
+                g.db.execute('insert into clientes (nome, indicacao) values (?, ?)',
+                        [ request.form['cliente'], colaborador_id ])
+                g.db.commit()
+    return redirect(url_for('main_page'))
 
 
 @app.route('/_remove_client')
@@ -118,9 +118,12 @@ def remove_client():
 
     if (colab_id):
         listaDeClientes = updated_recommendations(colab_id)
-        contasAbertas = map(lambda x: x['conta'], listaDeClientes).count(True)
+        contasAbertas = map(lambda x: x['contaAberta'], listaDeClientes).count(True)
+        contasAtivas = map(lambda x: x['contaAtiva'], listaDeClientes).count(True)
 
-    return jsonify(total = len(listaDeClientes), abertas = contasAbertas)
+        return jsonify( total = len(listaDeClientes),
+                        abertas = contasAbertas,
+                        ativas = contasAtivas)
 
 
 @app.route('/_open_acc')
@@ -136,20 +139,47 @@ def open_account():
 
     if (colab_id):
         listaDeClientes = updated_recommendations(colab_id)
-        contasAbertas = map(lambda x: x['conta'], listaDeClientes).count(True)
+        contasAtivas = map(lambda x: x['contaAtiva'], listaDeClientes).count(True)
+        contasAbertas = map(lambda x: x['contaAberta'], listaDeClientes).count(True)
 
-    return jsonify(total = len(listaDeClientes), abertas = contasAbertas)
+        return jsonify( total = len(listaDeClientes), 
+                        abertas = contasAbertas,
+                        ativas = contasAtivas)
+
+@app.route('/_activate_acc')
+def activate_account():
+    """
+    This view will activate the given account.
+    """
+    cliente_id = request.args.get('idCliente', None, type=int)
+    colab_id = request.args.get('idColaborador', 0, type=int)
+    checked = request.args.get('checked', 0, type=int)
+
+    if (cliente_id):
+        g.db.execute('update clientes set aplicacao=? where id=?',
+                [ checked, cliente_id ])
+        g.db.commit()
+
+    if (colab_id):
+        listaDeClientes = updated_recommendations(colab_id)
+        contasAtivadas = map(lambda x: x['contaAtiva'], listaDeClientes).count(True)
+        contasAbertas = map(lambda x: x['contaAberta'], listaDeClientes).count(True)
+
+        return jsonify( total = len(listaDeClientes),
+                        ativas = contasAtivadas,
+                        abertas = contasAbertas)
 
 
 def updated_recommendations(colaboradorId):
     """
-    This helper function is used to get the updated recommendations of a
-    certain collaborator.
+    This helper function is used to get the recommendations of a certain
+    collaborator.
     """
-    cur = g.db.execute('select * from clientes where indicacao=?', [ colaboradorId ])
+    cur = g.db.execute('select id, nome, conta, aplicacao, indicacao from clientes where indicacao=?', [ colaboradorId ])
     clientsList = [ dict(id = row[0], nome = row[1],
-        conta = True if row[2] else False,
-        indicacao = row[3]) for row in cur.fetchall() ]
+        contaAberta = True if row[2] else False,
+        contaAtiva = True if row[3] else False,
+        indicacao = row[4]) for row in cur.fetchall() ]
     return clientsList
 
 
