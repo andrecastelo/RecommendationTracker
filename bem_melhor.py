@@ -11,7 +11,7 @@ from flask import Flask, request, session, g, redirect, url_for, \
 # configuração
 DATABASE = 'bem_melhor.db'
 DEBUG = True
-SECRET_KEY = 'development key'
+SECRET_KEY = '98u23e87y34r38392okf'
 USERNAME = 'admin'
 PASSWORD = 'default'
 
@@ -20,10 +20,7 @@ PASSWORD = 'default'
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.from_envvar('FLASKR_SETTINGS', silent = True)
-
-# global variables
-lastCollaborator = ''
-focusClient = 0
+app.secret_key = app.config['SECRET_KEY']
 
 
 # funções do banco
@@ -80,15 +77,17 @@ def main_page():
 
     return render_template('main.html', 
         colaboradores = sorted(entries, key = lambda k: k['indicacoes'], reverse = True),
-        listaClientes = clientsList, colaboradorAnterior = lastCollaborator, focaNoCliente = focusClient)
+        listaClientes = clientsList,
+        colaboradorAnterior = session.get('lastCollaborator', ''),
+        focaNoCliente = session.get('focusClient', ''))
 
 
 @app.route('/add_client', methods = ['POST'])
 def add_client():
-    global lastCollaborator, focusClient
     lastCollaborator = request.form['colab-indicador']
     if lastCollaborator:
-        focusClient = 1;
+        session['focusClient'] = 1;
+        session['lastCollaborator'] = lastCollaborator
 
     cur = g.db.execute('select id from colaboradores where nome=?',
           [ request.form['colab-indicador'] ])

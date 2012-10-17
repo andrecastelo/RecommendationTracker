@@ -74,12 +74,11 @@
 			]
 		});
 
-		if ({{ focaNoCliente }}) {
+		{% if focaNoCliente %}
 			$('#cliente-input').focus();
-		}
-		else {
+		{% else %}
 			$('#colab-select').focus();
-		}
+		{% endif %}
 
 	});
 
