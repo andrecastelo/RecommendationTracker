@@ -66,7 +66,6 @@
 		});
 
 
-
 		$('#colab-select').typeahead({
 			source: [
 			{% for colaborador in colaboradores %}
@@ -75,28 +74,36 @@
 			]
 		});
 
+		if ({{ focaNoCliente }}) {
+			$('#cliente-input').focus();
+		}
+		else {
+			$('#colab-select').focus();
+		}
+
 	});
 
 
 </script>
 
-	<p>Utilize o formulário abaixo para adicionar um novo cliente e o colaborador que o indicou.</p>
+
 	<form action="{{ url_for('add_client') }}" method='post' class='add-entry form-horizontal row'>
-		<div class="control-group span6 offset1">
+		<div class="span2"><p>Utilize o formulário ao lado para adicionar um novo cliente e o colaborador que o indicou.</p></div>
+		<div class="control-group span6">
 			<label class="control-label" for="colab-select">Colaborador</label>
 			<div class="controls">
-				<input type="text" class='adicionarToolTip' name="colab-indicador" id="colab-select" data-placement='right' title='Digite o nome do colaborador. Se já existir, o cliente será adicionado à sua lista de recomendações. Se não, um novo colaborador será criado com esse cliente recomendado.'>
+				<input value='{{ colaboradorAnterior }}' type="text" class='adicionarToolTip' name="colab-indicador" id="colab-select" data-placement='right' title='Digite o nome do colaborador. Se já existir, o cliente será adicionado à sua lista de recomendações. Se não, um novo colaborador será criado com esse cliente recomendado.'>
 			</div>
 		</div>
 
-		<div class="control-group span6 offset1">
+		<div class="control-group span6">
 			<label for="cliente-input" class="control-label">Cliente</label>
 			<div class="controls">
 				<input type="text" name='cliente' id='cliente-input' class='cliente'>
 			</div>
 		</div>
 
-		<div class="control-group span6 offset1">
+		<div class="control-group span6">
 			<div class="controls">
 				<button type="submit" name="action" class="btn">Adicionar</button>
 			</div>

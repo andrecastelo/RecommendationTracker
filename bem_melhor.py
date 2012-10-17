@@ -21,6 +21,10 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 app.config.from_envvar('FLASKR_SETTINGS', silent = True)
 
+# global variables
+lastCollaborator = ''
+focusClient = 0
+
 
 # funções do banco
 def connect_db():
@@ -76,13 +80,22 @@ def main_page():
 
     return render_template('main.html', 
         colaboradores = sorted(entries, key = lambda k: k['indicacoes'], reverse = True),
-        listaClientes = clientsList)
+        listaClientes = clientsList, colaboradorAnterior = lastCollaborator, focaNoCliente = focusClient)
 
 
 @app.route('/add_client', methods = ['POST'])
 def add_client():
+    global lastCollaborator, focusClient
+    lastCollaborator = request.form['colab-indicador']
+    if lastCollaborator:
+        focusClient = 1;
+
     cur = g.db.execute('select id from colaboradores where nome=?',
           [ request.form['colab-indicador'] ])
+
+    if not request.form['colab-indicador']:
+        flash(Markup('Colaborador inv&aacute;lido.'), 'alert-error')
+        return redirect(url_for('main_page'))
 
     if cur.fetchall():
         cur = g.db.execute('select id from colaboradores where nome=?',
@@ -92,6 +105,10 @@ def add_client():
             g.db.execute('insert into clientes (nome, indicacao) values (?, ?)',
                     [ request.form['cliente'], colaborador_id ])
             g.db.commit()
+            flash(Markup('Usu&aacute;rio adicionado com sucesso.'), 'alert-success')
+        else:
+            flash(Markup('Cliente inv&aacute;lido.'), 'alert-error')
+            return redirect(url_for('main_page'))            
 
     else:
         if (request.form['colab-indicador']):
@@ -106,6 +123,12 @@ def add_client():
                 g.db.execute('insert into clientes (nome, indicacao) values (?, ?)',
                         [ request.form['cliente'], colaborador_id ])
                 g.db.commit()
+                flash(Markup('Usuario e colaborador adicionados com sucesso.'), 'alert-success')
+                return redirect(url_for('main_page'))
+            else:
+                flash(Markup('Cliente inv&aacute;lido.'), 'alert-error')
+                return redirect(url_for('main_page'))
+
     return redirect(url_for('main_page'))
 
 
