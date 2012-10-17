@@ -1,18 +1,17 @@
 .add-entry { border-bottom: 1px solid #ccc; border-top: 1px solid #ccc; padding-top: 20px; }
-.add-entry .btn { float: right; margin-right: 60px;}
+.add-entry .btn { margin-left: 130px;}
 
 .colaboradores { list-style: none; }
 .colaboradores li { margin: 15px 0; }
-.colaboradores .row { height: 20px; }
-.colaboradores .indicacoes { margin-left: 15px; }
-.colaboradores li p { background-color: #eee; padding: 10px; border-radius: 5px; }
+.colaboradores .header { background-color: #eee; padding: 10px 0; border-radius: 5px; height: 20px;}
+.colaboradores .indicacoes { margin-top: 15px; }
 
 .removeLink { position: relative; top: 3px; }
 
 .contas-abertas.adicionarToolTip:hover,
-.contas-total.adicionarToolTip:hover { font-style: italic; font-family: Georgia, Times, Serif; font-size: 1.5em; font-weight: bold; cursor: default;}
+.contas-total.adicionarToolTip:hover { font-style: italic; font-weight: bold; cursor: default;}
 
 .contas-abertas.adicionarToolTip,
-.contas-total.adicionarToolTip { font-style: italic; font-family: Georgia, Times, Serif; font-size: 1.5em; cursor: default;}
+.contas-total.adicionarToolTip { font-style: italic; cursor: default;}
 
 h1, h2 { font-family: Georgia, Times, Serif; font-weight: normal; }
