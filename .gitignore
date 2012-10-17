@@ -146,6 +146,7 @@ sdist
 develop-eggs
 .installed.cfg
 *.db
+bem_melhor.db
 
 # Installer logs
 pip-log.txt
