@@ -65,6 +65,15 @@
 			placement: 'right'
 		});
 
+		$('#colab-select').popover({
+			trigger: 'focus',
+			content: 'Adicionar colaborador. Se já existir, o cliente será adicionado à sua lista de recomendações. Se não, um novo colaborador será criado com esse cliente recomendado.'
+		});
+		$('#cliente-input').popover({
+			trigger: 'focus',
+			content: 'Adicione o nome do cliente. Ele estará atrelado ao colaborador acima.'
+		});
+
 
 		$('#colab-select').typeahead({
 			source: [
@@ -91,14 +100,14 @@
 		<div class="control-group span6">
 			<label class="control-label" for="colab-select">Colaborador</label>
 			<div class="controls">
-				<input value='{{ colaboradorAnterior }}' type="text" class='adicionarToolTip' name="colab-indicador" id="colab-select" data-placement='right' title='Digite o nome do colaborador. Se já existir, o cliente será adicionado à sua lista de recomendações. Se não, um novo colaborador será criado com esse cliente recomendado.'>
+				<input value='{{ colaboradorAnterior }}' type="text" name="colab-indicador" id="colab-select" data-placement='right' title='Colaborador.' >
 			</div>
 		</div>
 
 		<div class="control-group span6">
 			<label for="cliente-input" class="control-label">Cliente</label>
 			<div class="controls">
-				<input type="text" name='cliente' id='cliente-input' class='cliente'>
+				<input type="text" name='cliente' id='cliente-input' class='cliente' title='Cliente'>
 			</div>
 		</div>
 
@@ -146,7 +155,7 @@
 								</label>								
 							</div>
 							<div class="span2">
-								<label class="checkbox adicionarToolTip">
+								<label class="checkbox adicionarToolTip" data-placement='right' title='Marque se o cliente já fez alguma aplicação pela empresa.'>
 								{% if cliente.contaAtiva %}
 									<input type="checkbox" value='{{ cliente.id }}' name="ativada" class='ativa-checkbox' checked>
 									{% else %}
