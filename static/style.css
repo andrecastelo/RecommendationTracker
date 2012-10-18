@@ -1,9 +1,11 @@
+.page { margin-top: 100px; }
+
 .add-entry { border-bottom: 1px solid #ccc; border-top: 1px solid #ccc; padding-top: 20px; }
 .add-entry .btn { margin-left: 130px;}
 
 .colaboradores { list-style: none; }
 .colaboradores li { margin: 15px 0; }
-.colaboradores .header { background-color: #eee; padding: 10px 0; border-radius: 5px; height: 20px;; font-style: italic; }
+.colaboradores .header { background-color: #eee; padding: 10px 0; height: 20px;; font-style: italic; }
 .colaboradores .indicacoes { margin-top: 15px; }
 
 .removeLink { position: relative; top: 3px; }

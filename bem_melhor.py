@@ -87,18 +87,19 @@ def add_client():
     lastCollaborator = request.form['colab-indicador']
     if lastCollaborator:
         session['focusClient'] = 1;
-        session['lastCollaborator'] = lastCollaborator
+        session['lastCollaborator'] = lastCollaborator.lower()
 
     cur = g.db.execute('select id from colaboradores where nome=?',
-          [ request.form['colab-indicador'] ])
+          [ request.form['colab-indicador'].lower() ])
 
     if not request.form['colab-indicador']:
         flash(Markup('Colaborador inv&aacute;lido.'), 'alert-error')
         return redirect(url_for('main_page'))
 
+    # If the collaborator exists
     if cur.fetchall():
         cur = g.db.execute('select id from colaboradores where nome=?',
-                [ request.form['colab-indicador'] ])
+                [ request.form['colab-indicador'].lower() ])
         colaborador_id = cur.fetchall()[0][0]
         if request.form['cliente']:
             g.db.execute('insert into clientes (nome, indicacao) values (?, ?)',
@@ -109,13 +110,14 @@ def add_client():
             flash(Markup('Cliente inv&aacute;lido.'), 'alert-error')
             return redirect(url_for('main_page'))            
 
+    # If the collaborator doesn't exist
     else:
         if (request.form['colab-indicador']):
             g.db.execute('insert into colaboradores (nome) values (?)',
-                [ request.form['colab-indicador'] ])
+                [ request.form['colab-indicador'].lower() ])
             g.db.commit()
             cur = g.db.execute('select id from colaboradores where nome=?',
-                [ request.form['colab-indicador'] ])
+                [ request.form['colab-indicador'].lower() ])
             colaborador_id = cur.fetchall()[0][0]
 
             if request.form['cliente']:
