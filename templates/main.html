@@ -65,14 +65,16 @@
 			placement: 'right'
 		});
 
-		$('#colab-select').popover({
-			trigger: 'focus',
-			content: 'Adicionar colaborador. Se já existir, o cliente será adicionado à sua lista de recomendações. Se não, um novo colaborador será criado com esse cliente recomendado.'
-		});
-		$('#cliente-input').popover({
-			trigger: 'focus',
-			content: 'Adicione o nome do cliente. Ele estará atrelado ao colaborador acima.'
-		});
+		{% if not focaNoCliente %}
+			$('#colab-select').popover({
+				trigger: 'focus',
+				content: 'Adicionar colaborador. Se já existir, o cliente será adicionado à sua lista de recomendações. Se não, um novo colaborador será criado com esse cliente recomendado.'
+			});
+			$('#cliente-input').popover({
+				trigger: 'focus',
+				content: 'Adicione o nome do cliente. Ele estará atrelado ao colaborador acima.'
+			});
+		{% endif %}
 
 
 		$('#colab-select').typeahead({
