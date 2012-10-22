@@ -1,4 +1,5 @@
 .page { margin-top: 100px; }
+.navbar p { margin-top: 10px; }
 
 .add-entry { border-bottom: 1px solid #ccc; border-top: 1px solid #ccc; padding-top: 20px; }
 .add-entry .btn { margin-left: 130px;}
