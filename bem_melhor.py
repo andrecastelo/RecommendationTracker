@@ -5,6 +5,8 @@
 from __future__ import with_statement
 from sqlite3 import dbapi2 as sqlite3
 from contextlib import closing
+from hashlib import sha1
+from functools import wraps
 from flask import Flask, request, session, g, redirect, url_for, \
                   abort, render_template, flash, Markup, jsonify
 
@@ -46,6 +48,18 @@ def teardown_request(exception):
     g.db.close()
 
 
+# login required decorator
+def login_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwds):
+        if session['logged_in']:
+            return f(*args, **kwds)
+        else:
+            flash(Markup('Voc&ecirc; precisa estar logado para fazer isso'), 'alert-error')
+            return redirect(url_for('main_page'))
+    return wrapper
+
+
 # view principal
 @app.route('/')
 def main_page():
@@ -80,6 +94,39 @@ def main_page():
         listaClientes = clientsList,
         colaboradorAnterior = session.get('lastCollaborator', ''),
         focaNoCliente = session.get('focusClient', ''))
+    
+@app.route('/login', methods = ['POST'])
+def login():
+    if request.method == 'POST':
+        x = lambda g: sha1(g).hexdigest()
+        login = request.form['login']
+        password = x(request.form['pass'])
+        cur = g.db.execute('select nome, password from admins where nome=?',
+                [ login ])
+        admins = [ dict(login = i[0], senha = i[1]) for i in cur.fetchall()]
+
+        if not admins:
+            flash(Markup('Login inexistente.'), 'alert-error')
+            return redirect(url_for('main_page'))
+
+        if admins[0]['senha'] == password:
+            session['logged_in'] = True
+            session['logged_as'] = admins[0]['login']
+            flash(Markup('Voc&ecirc; foi logado com sucesso.'), 'alert-success')
+            return redirect(url_for('main_page'))
+        else:
+            flash(Markup('Login ou senha errados ou inexistentes.'), 'alert-error')
+            return redirect(url_for('main_page'))
+
+@app.route('/logout')
+@login_required
+def logout():
+    session.pop('logged_in', None)
+    session.pop('logged_as', None)
+    session.pop('lastCollaborator', None)
+    session.pop('focusClient', None)
+    flash(Markup('Voc&ecirc; foi deslogado com sucesso.'), 'alert-success')
+    return redirect(url_for('main_page'))
 
 
 @app.route('/add_client', methods = ['POST'])
@@ -134,6 +181,7 @@ def add_client():
 
 
 @app.route('/_remove_client')
+@login_required
 def remove_client():
     colab_id = request.args.get('idColaborador', 0, type=int)
     cliente = request.args.get('idCliente', None, type=int)
@@ -151,6 +199,7 @@ def remove_client():
 
 
 @app.route('/_open_acc')
+@login_required
 def open_account():
     cliente_id = request.args.get('idCliente', None, type=int)
     colab_id = request.args.get('idColaborador', 0, type=int)
@@ -171,6 +220,7 @@ def open_account():
                         ativas = contasAtivas)
 
 @app.route('/_activate_acc')
+@login_required
 def activate_account():
     """
     This view will activate the given account.
