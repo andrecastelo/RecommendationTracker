@@ -143,36 +143,65 @@
 					</span>
 				</div>
 				<div class="indicacoes">
-					{% for cliente in colaborador.listaIndicacoes %}
-						<div class="row" id="cliente-{{ cliente.id }}">
-							<div class="span3 offset1">{{ cliente.nome }}</div>
-							<div class="span2">
-								<label class='checkbox adicionarToolTip' data-placement='left' title='Marque se o cliente abriu conta na empresa ou não'>
-								{% if cliente.contaAberta %}
-									<input type="checkbox" value='{{ cliente.id }}' name="conta" class='conta-checkbox' checked>
-									{% else %}
-									<input type="checkbox" value='{{ cliente.id }}' name="conta" class='conta-checkbox'>
-								{% endif %}
-									Conta aberta
-								</label>								
+					{% if session.logged_in %}
+						{% for cliente in colaborador.listaIndicacoes %}
+							<div class="row" id="cliente-{{ cliente.id }}">
+								<div class="span3 offset1">{{ cliente.nome }}</div>
+								<div class="span2">
+									<label class='checkbox adicionarToolTip' data-placement='left' title='Marque se o cliente abriu conta na empresa ou não'>
+									{% if cliente.contaAberta %}
+										<input type="checkbox" value='{{ cliente.id }}' name="conta" class='conta-checkbox' checked>
+										{% else %}
+										<input type="checkbox" value='{{ cliente.id }}' name="conta" class='conta-checkbox'>
+									{% endif %}
+										Conta aberta
+									</label>								
+								</div>
+								<div class="span2">
+									<label class="checkbox adicionarToolTip" data-placement='right' title='Marque se o cliente já fez alguma aplicação pela empresa.'>
+									{% if cliente.contaAtiva %}
+										<input type="checkbox" value='{{ cliente.id }}' name="ativada" class='ativa-checkbox' checked>
+										{% else %}
+										<input type="checkbox" value='{{ cliente.id }}' name="ativada" class='ativa-checkbox'>
+									{% endif %}
+										Conta ativa
+									</label>
+								</div>
+								<div class="span1">
+									<a href="#" class="removeLink adicionarToolTip" title="Remover cliente" value="{{ cliente.id }}">
+										<i class="icon-remove"></i>
+									</a>
+								</div>
 							</div>
-							<div class="span2">
-								<label class="checkbox adicionarToolTip" data-placement='right' title='Marque se o cliente já fez alguma aplicação pela empresa.'>
-								{% if cliente.contaAtiva %}
-									<input type="checkbox" value='{{ cliente.id }}' name="ativada" class='ativa-checkbox' checked>
-									{% else %}
-									<input type="checkbox" value='{{ cliente.id }}' name="ativada" class='ativa-checkbox'>
-								{% endif %}
-									Conta ativa
-								</label>
+						{% endfor %}
+					{% else %}
+						{% for cliente in colaborador.listaIndicacoes %}
+							<div class="row" id="cliente-{{ cliente.id }}">
+								<div class="span3 offset1">{{ cliente.nome }}</div>
+								<div class="span2">
+									<label class='checkbox adicionarToolTip' data-placement='left' title='Marcado se o cliente abriu conta na empresa ou não'>
+									{% if cliente.contaAberta %}
+										<input type="checkbox" disabled class='conta-checkbox' checked>
+										{% else %}
+										<input type="checkbox" disabled class='conta-checkbox'>
+									{% endif %}
+										Conta aberta
+									</label>								
+								</div>
+								<div class="span2">
+									<label class="checkbox adicionarToolTip" data-placement='right' title='Marcado se o cliente já fez alguma aplicação pela empresa.'>
+									{% if cliente.contaAtiva %}
+										<input type="checkbox" disabled class='ativa-checkbox' checked>
+										{% else %}
+										<input type="checkbox" disabled class='ativa-checkbox'>
+									{% endif %}
+										Conta ativa
+									</label>
+								</div>
 							</div>
-							<div class="span1">
-								<a href="#" class="removeLink adicionarToolTip" title="Remover cliente" value="{{ cliente.id }}">
-									<i class="icon-remove"></i>
-								</a>
-							</div>
-						</div>
-					{% endfor %}
+						{% endfor %}					
+					{% endif %}
+
 				</div>			
 			</li>
 			{% endif %}
