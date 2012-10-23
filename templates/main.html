@@ -128,7 +128,7 @@
 	<div class="row">
 		<ul class="colaboradores span9">
 			{% for colaborador in colaboradores %}
-			{% if not not colaborador.listaIndicacoes %}
+			{% if colaborador.listaIndicacoes %}
 			<li id="colaborador-{{ colaborador.id }}" class="span9">
 				<div class="row header">
 					<span class="span2">{{ colaborador.nome }}</span>
@@ -151,7 +151,7 @@
 									<label class='checkbox adicionarToolTip' data-placement='left' title='Marque se o cliente abriu conta na empresa ou não'>
 									{% if cliente.contaAberta %}
 										<input type="checkbox" value='{{ cliente.id }}' name="conta" class='conta-checkbox' checked>
-										{% else %}
+									{% else %}
 										<input type="checkbox" value='{{ cliente.id }}' name="conta" class='conta-checkbox'>
 									{% endif %}
 										Conta aberta
