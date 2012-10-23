@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-	<title>Bem Melhor Tracker Prototype</title>
+	<title>Bem Melhor</title>
 	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}" />
 	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
@@ -20,8 +20,7 @@
 				<div class="span12">
 					{% if session.logged_in %}
 					<p class="pull-right">
-						Logado como {{ session.logged_as }}.
-						<a href="{{ url_for('logout') }}">Logout.</a>
+						Logado como <strong>{{ session.logged_as }}</strong>. <a href="{{ url_for('logout') }}">Logout.</a>
 					</p>
 					{% else %}
 					<form action="{{ url_for('login') }}" method='POST' class="navbar-form pull-right">
@@ -37,7 +36,7 @@
 
 	<div class="page span9">
 		<div class="row">
-			<h1>Bem Melhor Tracker</h1>
+			<h1>Bem Melhor</h1>
 		</div>
 
 		{% for category, message in get_flashed_messages(with_categories=true) %}
