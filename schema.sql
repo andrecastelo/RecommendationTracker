@@ -27,5 +27,6 @@ insert into colaboradores (nome) values ('llisboa');
 insert into colaboradores (nome) values ('nsixel');
 insert into colaboradores (nome) values ('vdias');
 
-insert into admins (nome, password) values ('andrecastelo', 'c3d05c5fe71edf6960934a802ca1bf4257404646');
-insert into admins (nome, password) values ('nsixel', '637dd3894df6b16a956ab46ed377e5d85a7b2310');
+insert into admins (nome, password) values ('agomes', 'c3d05c5fe71edf6960934a802ca1bf4257404646');
+insert into admins (nome, password) values ('nsixel', 'ae0484601406c4c2efb7438e733fbc9bd20a5840');
+insert into admins (nome, password) values ('lmariano', 'ae0484601406c4c2efb7438e733fbc9bd20a5840');
