@@ -17,7 +17,6 @@ SECRET_KEY = '98u23e87y34r38392okf'
 USERNAME = 'admin'
 PASSWORD = 'default'
 
-
 # aplicação
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -52,7 +51,7 @@ def teardown_request(exception):
 def login_required(f):
     @wraps(f)
     def wrapper(*args, **kwds):
-        if session['logged_in']:
+        if session.get('logged_in', None):
             return f(*args, **kwds)
         else:
             flash(Markup('Voc&ecirc; precisa estar logado para fazer isso'), 'alert-error')
@@ -93,7 +92,8 @@ def main_page():
         colaboradores = sorted(entries, key = lambda k: k['indicacoes'], reverse = True),
         listaClientes = clientsList,
         colaboradorAnterior = session.get('lastCollaborator', ''),
-        focaNoCliente = session.get('focusClient', ''))
+        focaNoCliente = True if session.get('lastCollaborator', False) else False)
+
     
 @app.route('/login', methods = ['POST'])
 def login():
@@ -118,13 +118,13 @@ def login():
             flash(Markup('Login ou senha errados ou inexistentes.'), 'alert-error')
             return redirect(url_for('main_page'))
 
+
 @app.route('/logout')
 @login_required
 def logout():
     session.pop('logged_in', None)
     session.pop('logged_as', None)
     session.pop('lastCollaborator', None)
-    session.pop('focusClient', None)
     flash(Markup('Voc&ecirc; foi deslogado com sucesso.'), 'alert-success')
     return redirect(url_for('main_page'))
 
@@ -133,7 +133,6 @@ def logout():
 def add_client():
     lastCollaborator = request.form['colab-indicador']
     if lastCollaborator:
-        session['focusClient'] = 1;
         session['lastCollaborator'] = lastCollaborator.lower()
 
     cur = g.db.execute('select id from colaboradores where nome=?',
@@ -177,6 +176,7 @@ def add_client():
                 flash(Markup('Cliente inv&aacute;lido.'), 'alert-error')
                 return redirect(url_for('main_page'))
 
+    
     return redirect(url_for('main_page'))
 
 
@@ -257,7 +257,12 @@ def updated_recommendations(colaboradorId):
     return clientsList
 
 
+def debug():
+    raise
+    return 'oh no'
+
+
 # execução
 if __name__ == '__main__':
     #init_db()
-    app.run();
+    app.run(host = '0.0.0.0');
